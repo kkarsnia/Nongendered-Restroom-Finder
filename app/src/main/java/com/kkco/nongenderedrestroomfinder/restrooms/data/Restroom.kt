@@ -1,48 +1,54 @@
 package com.kkco.nongenderedrestroomfinder.restrooms.data
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "restrooms")
 data class Restroom(
-    @SerializedName("accessible")
+    @field:SerializedName("accessible")
     val accessible: Boolean,
-    @SerializedName("approved")
+    @field:SerializedName("approved")
     val approved: Boolean,
-    @SerializedName("bearing")
+    @field:SerializedName("bearing")
     val bearing: String,
-    @SerializedName("changing_table")
+    @field:SerializedName("changing_table")
     val changingTable: Boolean,
-    @SerializedName("city")
+    @field:SerializedName("city")
     val city: String,
-    @SerializedName("comment")
+    @field:SerializedName("comment")
     val comment: String,
-    @SerializedName("country")
+    @field:SerializedName("country")
     val country: String,
-    @SerializedName("created_at")
+    @field:SerializedName("created_at")
     val createdAt: String,
-    @SerializedName("directions")
+    @field:SerializedName("directions")
     val directions: String,
-    @SerializedName("distance")
+    @field:SerializedName("distance")
     val distance: Double,
-    @SerializedName("downvote")
+    @field:SerializedName("downvote")
     val downvote: Int,
-    @SerializedName("edit_id")
+    @field:SerializedName("edit_id")
     val editId: Int,
-    @SerializedName("id")
+    @PrimaryKey
+    @field:SerializedName("id")
     val id: Int,
-    @SerializedName("latitude")
+    @field:SerializedName("latitude")
     val latitude: Double,
-    @SerializedName("longitude")
+    @field:SerializedName("longitude")
     val longitude: Double,
-    @SerializedName("name")
+    @field:SerializedName("name")
     val name: String,
-    @SerializedName("state")
+    @field:SerializedName("state")
     val state: String,
-    @SerializedName("street")
+    @field:SerializedName("street")
     val street: String,
-    @SerializedName("unisex")
+    @field:SerializedName("unisex")
     val unisex: Boolean,
-    @SerializedName("updated_at")
+    @field:SerializedName("updated_at")
     val updatedAt: String,
-    @SerializedName("upvote")
+    @field:SerializedName("upvote")
     val upvote: Int
-)
+) {
+    override fun toString() = name
+}
