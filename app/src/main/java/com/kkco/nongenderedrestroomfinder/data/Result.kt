@@ -1,5 +1,7 @@
 package com.kkco.nongenderedrestroomfinder.data
 
+import android.util.Log
+
 /**
  * A generic class that holds a value with its loading status.
  *
@@ -17,14 +19,19 @@ data class Result<out T>(val status: Status, val data: T?, val message: String?)
 
     companion object {
         fun <T> success(data: T): Result<T> {
+            Log.d("Result", "success")
+            Log.d("Result", "success data: " + data.toString())
             return Result(Status.SUCCESS, data, null)
         }
 
         fun <T> error(message: String, data: T? = null): Result<T> {
+            Log.d("Result", "error")
+            Log.d("Result", "error: $message")
             return Result(Status.ERROR, data, message)
         }
 
         fun <T> loading(data: T? = null): Result<T> {
+            Log.d("Result", "loading")
             return Result(Status.LOADING, data, null)
         }
     }

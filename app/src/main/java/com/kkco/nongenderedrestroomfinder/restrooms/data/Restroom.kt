@@ -11,25 +11,25 @@ data class Restroom(
     @field:SerializedName("approved")
     val approved: Boolean,
     @field:SerializedName("bearing")
-    val bearing: String,
+    val bearing: String?,
     @field:SerializedName("changing_table")
-    val changingTable: Boolean,
+    val changingTable: Boolean?,
     @field:SerializedName("city")
     val city: String,
     @field:SerializedName("comment")
-    val comment: String,
+    val comment: String?,
     @field:SerializedName("country")
-    val country: String,
+    val country: String?,
     @field:SerializedName("created_at")
-    val createdAt: String,
+    val createdAt: String?,
     @field:SerializedName("directions")
-    val directions: String,
+    val directions: String?,
     @field:SerializedName("distance")
-    val distance: Double,
+    val distance: Double?,
     @field:SerializedName("downvote")
-    val downvote: Int,
+    val downvote: Int?,
     @field:SerializedName("edit_id")
-    val editId: Int,
+    val editId: Int?,
     @PrimaryKey
     @field:SerializedName("id")
     val id: Int,
@@ -46,9 +46,9 @@ data class Restroom(
     @field:SerializedName("unisex")
     val unisex: Boolean,
     @field:SerializedName("updated_at")
-    val updatedAt: String,
+    val updatedAt: String?,
     @field:SerializedName("upvote")
-    val upvote: Int
+    val upvote: Int?
 ) {
     override fun toString() = name
 }

@@ -12,7 +12,7 @@ import androidx.room.Query
 @Dao
 interface RestroomDao {
 
-    @Query("SELECT *  FROM restrooms ORDER BY distance DESC")
+    @Query("SELECT *  FROM restrooms ORDER BY id DESC")
     fun getRestrooms(): LiveData<List<Restroom>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

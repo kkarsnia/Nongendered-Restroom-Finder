@@ -3,6 +3,7 @@ package com.kkco.nongenderedrestroomfinder.restrooms.ui
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+// import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,13 +13,6 @@ import com.kkco.nongenderedrestroomfinder.restrooms.data.Restroom
 class RestroomListAdapter : ListAdapter<Restroom, RestroomListAdapter.ViewHolder>(
     DiffCallback()
 ) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            ItemRestroomListBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
-            )
-        )
-    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val restroom = getItem(position)
@@ -28,9 +22,18 @@ class RestroomListAdapter : ListAdapter<Restroom, RestroomListAdapter.ViewHolder
         }
     }
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder(
+            ItemRestroomListBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
+    }
+
     private fun createOnClickListener(id: Int, name: String): View.OnClickListener {
         return View.OnClickListener {
-            //TODO: implement navigation stuff here
+            // val directions = RestroomListFragmentDirections.actionRestroomlistFragmentToMapsFragment(id, name)
+            // it.findNavController().navigate(directions)
         }
     }
 

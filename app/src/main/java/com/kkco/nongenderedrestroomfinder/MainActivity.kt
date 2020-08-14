@@ -1,5 +1,9 @@
 package com.kkco.nongenderedrestroomfinder
 
+// import androidx.navigation.NavController
+// import androidx.navigation.findNavController
+// import androidx.navigation.ui.AppBarConfiguration
+// import androidx.navigation.ui.setupWithNavController
 import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Location
@@ -7,14 +11,24 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.SupportMapFragment
+import com.kkco.nongenderedrestroomfinder.databinding.ActivityMainBinding
+import com.kkco.nongenderedrestroomfinder.restrooms.ui.RestroomListFragment
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
+
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+    override fun supportFragmentInjector() = dispatchingAndroidInjector
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    lateinit var mapFragment: SupportMapFragment
+    // private lateinit var navController: NavController
 
     private var lastKnownLocation: Location? = null
 
@@ -22,38 +36,30 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        val binding: ActivityMainBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.executePendingBindings()
+        // navController = findNavController(R.id.nav_host_fragment)
+        // binding.navigationView.setupWithNavController(navController)
 
         // Construct a FusedLocationProviderClient.
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-
-        //TODO: this is not working with savedInstanceState != null
-        if (savedInstanceState != null) {
-            lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION)
-            //TODO: add lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION)
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MapsFragment.newInstance())
-                .commitNow()
-
-//      mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-//      LocationUtils(mapFragment, this)
-        }
+//         supportFragmentManager.beginTransaction()
+//             .replace(R.id.container, MapsFragment.newInstance())
+//             .commitNow()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container, MapsFragment.newInstance())
+            .replace(R.id.container, RestroomListFragment())
             .commitNow()
 
-        if (checkPermissions()) {
-            getDeviceLocation()
-        } else {
-            requestPermissions()
-        }
+        // if (checkPermissions()) {
+        //     getDeviceLocation()
+        // } else {
+        //     requestPermissions()
+        // }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-//      map?.let { map ->
-//        outState.putParcelable(KEY_CAMERA_POSITION, map.cameraPosition)
-//        outState.putParcelable(KEY_LOCATION, lastKnownLocation)
-//      }
         outState.putParcelable(KEY_LOCATION, lastKnownLocation)
         super.onSaveInstanceState(outState)
     }
@@ -75,16 +81,12 @@ class MainActivity : AppCompatActivity() {
                                 "MainActivity",
                                 "lastKnownLocation: " + lastKnownLocation!!.latitude + ", " + lastKnownLocation!!.longitude
                             )
-//              map?.moveCamera(CameraUpdateFactory.newLatLngZoom(
-//                  LatLng(lastKnownLocation!!.latitude,
-//                      lastKnownLocation!!.longitude), DEFAULT_ZOOM.toFloat()))
+                            //TODO: inform fragment
                         }
                     } else {
                         Log.d("MainActivity", "Current location is null. Using defaults.")
                         Log.e("MainActivity", "Exception: %s", task.exception)
-//            map?.moveCamera(CameraUpdateFactory
-//                .newLatLngZoom(defaultLocation, DEFAULT_ZOOM.toFloat()))
-//            map?.uiSettings?.isMyLocationButtonEnabled = false
+                        //TODO: inform fragment
                     }
                 }
             }

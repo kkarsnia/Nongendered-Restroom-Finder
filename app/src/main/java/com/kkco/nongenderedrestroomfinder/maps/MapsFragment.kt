@@ -1,4 +1,4 @@
-package com.kkco.nongenderedrestroomfinder
+package com.kkco.nongenderedrestroomfinder.maps
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +14,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.collections.MarkerManager
 import com.google.maps.android.ktx.utils.collection.addMarker
+import com.kkco.nongenderedrestroomfinder.R
 
 class MapsFragment : Fragment() {
 
