@@ -15,5 +15,5 @@ class RestroomRepository @Inject constructor(
     val restrooms = resultLiveData(
         databaseQuery = { dao.getRestrooms() },
         networkCall = { remoteSource.fetchData() },
-        saveCallResult = { dao.insertAll(it.results) })
+        saveCallResult = { dao.insertAll(it) })
 }

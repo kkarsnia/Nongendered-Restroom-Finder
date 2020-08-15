@@ -20,7 +20,8 @@ interface RestroomService {
     // @GET("api/v1/restrooms/by_location?page=1&per_page=10&offset=0&unisex=true&lat=28.555746&lng=-81.375192")
     // restrooms/by_location.json?per_page=20&
     @GET("restrooms/by_location?page=1&per_page=10&offset=0&unisex=true&lat=28.555746&lng=-81.375192")
-    suspend fun getRestrooms(): Response<ResultsResponse<Restroom>>
+    suspend fun getRestrooms(): Response<List<Restroom>>
+    // suspend fun getRestrooms(): Response<ResultsResponse<Restroom>>
 
     //possible params:
     // @Query("page") page: Int? = null,

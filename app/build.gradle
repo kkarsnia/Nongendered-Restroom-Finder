@@ -100,8 +100,63 @@ dependencies {
   implementation "com.facebook.stetho:stetho-okhttp3:$rootProject.stetho"
   implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
-  testImplementation 'junit:junit:4.12'
-  androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-  androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+  // Testing
+  testImplementation "junit:junit:$rootProject.junitVersion"
+  testImplementation "com.squareup.okhttp3:mockwebserver:$rootProject.mockwebserverVersion"
+  testImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
+  testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
+
+  androidTestImplementation "androidx.test:core:$rootProject.testCoreVersion"
+  androidTestImplementation "androidx.test:runner:$rootProject.testRunnerVersion"
+  androidTestImplementation "androidx.test:rules:$rootProject.testRulesVersion"
+
+  androidTestImplementation "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
+  androidTestImplementation "androidx.recyclerview:recyclerview:$rootProject.recyclerViewVersion"
+  androidTestImplementation "com.google.android.material:material:$rootProject.materialVersion"
+
+  androidTestImplementation "androidx.test.ext:junit:$rootProject.testExtJunit"
+  androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
+  androidTestImplementation "androidx.test.espresso:espresso-contrib:$rootProject.espressoVersion"
+  androidTestImplementation "androidx.test.espresso:espresso-intents:$rootProject.espressoVersion"
+  androidTestImplementation "androidx.test.uiautomator:uiautomator:$rootProject.uiAutomatorVersion"
+  androidTestImplementation "androidx.work:work-testing:$rootProject.workVersion"
+
+  androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
+  androidTestImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
+  androidTestImplementation "org.mockito:mockito-android:$rootProject.mockitoAndroidVersion"
 
 }
+
+//task fullCoverageReport(type: JacocoReport) {
+//  dependsOn 'createDebugCoverageReport'
+//  dependsOn 'testDebugUnitTest'
+//  reports {
+//    xml.enabled = true
+//    html.enabled = true
+//  }
+//
+//  def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*',
+//                    '**/*Test*.*', 'android/**/*.*',
+//                    '**/*_MembersInjector.class',
+//                    '**/Dagger*Component.class',
+//                    '**/Dagger*Component$Builder.class',
+//                    '**/*_*Factory.class',
+//                    '**/*ComponentImpl.class',
+//                    '**/*SubComponentBuilder.class']
+//  def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug", excludes: fileFilter)
+//  def mainSrc = "${project.projectDir}/src/main/java"
+//
+//  sourceDirectories = files([mainSrc])
+//  classDirectories = files([debugTree])
+//  executionData = fileTree(dir: "$buildDir", includes: [
+//          "jacoco/testDebugUnitTest.exec",
+//          "outputs/code-coverage/connected/*coverage.ec"
+//  ])
+//}
+//
+//// we need all open to run tests which  a we enable only for debug builds.
+//project.tasks.whenTaskAdded {
+//  if (it.name == "testReleaseUnitTest") {
+//    it.enabled = false
+//  }
+//}

@@ -4,7 +4,8 @@ import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.google.gson.GsonBuilder
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
 import com.kkco.nongenderedrestroomfinder.data.AppDatabase
 import com.kkco.nongenderedrestroomfinder.restrooms.data.Restroom
@@ -25,14 +26,10 @@ class SeedDatabaseWorker(
             try {
                 applicationContext.assets.open(DATA_FILENAME).use { inputStream ->
                     JsonReader(inputStream.reader()).use { jsonReader ->
-                        // val type = object : TypeToken<List<Restroom>>() {}.type
-                        // val list: List<Restroom> = Gson().fromJson(jsonReader, type)
-                        // val type = Array<Restroom>::class.java
-                        val gson = GsonBuilder().create()
-                        val list: List<Restroom> = gson.fromJson(jsonReader, Restroom::class.java)
+                        val type = object : TypeToken<List<Restroom>>() {}.type
+                        val list: List<Restroom> = Gson().fromJson(jsonReader, type)
                         Log.d("SeedDatabaseWorker", "list: $list")
 
-                        // AppDatabase.getInstance(applicationContext).restroomDao().insertAll(list)
                         AppDatabase.getInstance(applicationContext).restroomDao().insertAll(list)
 
                         Result.success()

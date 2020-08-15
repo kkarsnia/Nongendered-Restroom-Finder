@@ -20,7 +20,7 @@ data class Result<out T>(val status: Status, val data: T?, val message: String?)
     companion object {
         fun <T> success(data: T): Result<T> {
             Log.d("Result", "success")
-            Log.d("Result", "success data: " + data.toString())
+            Log.d("Result", "success data: $data")
             return Result(Status.SUCCESS, data, null)
         }
 
