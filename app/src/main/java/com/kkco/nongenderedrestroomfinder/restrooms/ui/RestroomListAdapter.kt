@@ -1,9 +1,10 @@
 package com.kkco.nongenderedrestroomfinder.restrooms.ui
 
+// import androidx.navigation.findNavController
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-// import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +35,7 @@ class RestroomListAdapter : ListAdapter<Restroom, RestroomListAdapter.ViewHolder
         return View.OnClickListener {
             // val directions = RestroomListFragmentDirections.actionRestroomlistFragmentToMapsFragment(id, name)
             // it.findNavController().navigate(directions)
+            Log.d("RestroomListAdapter", "ONCLICK FIRED, NAME: $name")
         }
     }
 

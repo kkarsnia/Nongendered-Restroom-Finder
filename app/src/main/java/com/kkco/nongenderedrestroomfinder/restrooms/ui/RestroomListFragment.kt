@@ -54,14 +54,4 @@ class RestroomListFragment : Fragment(), Injectable {
             }
         })
     }
-
-    // companion object {
-    //     fun newInstance(): RestroomListFragment {
-    //         val args = Bundle()
-    //
-    //         val fragment = RestroomListFragment()
-    //         fragment.arguments = args
-    //         return fragment
-    //     }
-    // }
 }

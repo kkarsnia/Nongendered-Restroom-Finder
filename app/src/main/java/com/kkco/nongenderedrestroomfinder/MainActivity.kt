@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.kkco.nongenderedrestroomfinder.databinding.ActivityMainBinding
-import com.kkco.nongenderedrestroomfinder.restrooms.ui.RestroomListFragment
+import com.kkco.nongenderedrestroomfinder.maps.RestroomMapFragment
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
@@ -48,9 +48,11 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 //         supportFragmentManager.beginTransaction()
 //             .replace(R.id.container, MapsFragment.newInstance())
 //             .commitNow()
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.container, RestroomListFragment())
-            .commitNow()
+
+//         supportFragmentManager.beginTransaction()
+//             .replace(R.id.container, RestroomListFragment())
+//             .commitNow()
+        onOpenMap()
 
         // if (checkPermissions()) {
         //     getDeviceLocation()
@@ -124,6 +126,12 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 getDeviceLocation()
             }
         }
+    }
+
+    internal fun onOpenMap() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, RestroomMapFragment())
+            .commitNow()
     }
 //
 //  fun getLastKnownLocation() {
