@@ -8,7 +8,10 @@ class RestroomRemoteDataSource @Inject constructor(private val service: Restroom
     BaseDataSource() {
 
     //TODO: update with proper params from service
-    suspend fun fetchData() = getResult { service.getRestrooms() }
+
+    // suspend fun fetchData() = getResult { service.getRestrooms() }
+    // @GET("restrooms/by_location?page=1&per_page=20&offset=0&unisex=true&lat=28.555746&lng=-81.375192")
+    suspend fun fetchData() = getResult { service.getRestroomsRemote() }
 
     // @Query("page") page: Int? = null,
     // @Query("per_page") perPage: Int? = null,

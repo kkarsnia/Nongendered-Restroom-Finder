@@ -75,7 +75,7 @@ dependencies {
   implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.lifecycleVersion"
   implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"
 
-  //Google Maps & Location
+  // Google Maps & Location
   implementation 'com.google.android.gms:play-services-maps:17.0.0'
   implementation 'com.google.android.gms:play-services-location:17.0.0'
   implementation 'com.google.maps.android:maps-utils-ktx:2.1.1'

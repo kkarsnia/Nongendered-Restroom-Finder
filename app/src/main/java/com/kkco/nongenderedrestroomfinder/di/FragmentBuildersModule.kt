@@ -1,7 +1,7 @@
 package com.kkco.nongenderedrestroomfinder.di
 
 import com.kkco.nongenderedrestroomfinder.maps.MapsFragment
-import com.kkco.nongenderedrestroomfinder.maps.RestroomMapFragment
+import com.kkco.nongenderedrestroomfinder.maps.ui.RestroomMapFragment
 import com.kkco.nongenderedrestroomfinder.restrooms.ui.RestroomListFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector

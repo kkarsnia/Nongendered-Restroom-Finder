@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.kkco.nongenderedrestroomfinder.databinding.ActivityMainBinding
-import com.kkco.nongenderedrestroomfinder.maps.RestroomMapFragment
+import com.kkco.nongenderedrestroomfinder.maps.ui.RestroomMapFragment
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
@@ -115,22 +115,26 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     }
 
     //TODO: create a dialog to warn user if they deny permissions for negative path
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String?>,
-        grantResults: IntArray
-    ) {
-        when (requestCode) {
-            permissionCode -> if (grantResults.isNotEmpty() && grantResults[0] ==
-                PackageManager.PERMISSION_GRANTED
-            ) {
-                getDeviceLocation()
-            }
-        }
-    }
+    // override fun onRequestPermissionsResult(
+    //     requestCode: Int, permissions: Array<String?>,
+    //     grantResults: IntArray
+    // ) {
+    //     Log.d("MainActivity","onRequestPermissionsResult FIRED")
+    //     when (requestCode) {
+    //         permissionCode -> if (grantResults.isNotEmpty() && grantResults[0] ==
+    //             PackageManager.PERMISSION_GRANTED
+    //         ) {
+    //             getDeviceLocation()
+    //         }
+    //     }
+    // }
 
     internal fun onOpenMap() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container, RestroomMapFragment())
+            .replace(
+                R.id.container,
+                RestroomMapFragment()
+            )
             .commitNow()
     }
 //
