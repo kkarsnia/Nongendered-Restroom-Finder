@@ -11,7 +11,6 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -26,8 +25,6 @@ import com.kkco.nongenderedrestroomfinder.data.Result
 import com.kkco.nongenderedrestroomfinder.databinding.FragmentRestroomMapBinding
 import com.kkco.nongenderedrestroomfinder.di.Injectable
 import com.kkco.nongenderedrestroomfinder.di.injectViewModel
-import com.kkco.nongenderedrestroomfinder.restrooms.data.Restroom
-import com.kkco.nongenderedrestroomfinder.restrooms.ui.RestroomListViewModel
 import com.kkco.nongenderedrestroomfinder.ui.hide
 import com.kkco.nongenderedrestroomfinder.ui.show
 import com.kkco.nongenderedrestroomfinder.util.LOCATION_PERMISSION_REQUEST_CODE
@@ -37,20 +34,25 @@ class RestroomMapFragment : Fragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: RestroomListViewModel
     private lateinit var mMap: GoogleMap
     private lateinit var locationViewModel: LocationViewModel
-    private lateinit var restrooms: LiveData<Result<List<Restroom>>>
 
-    // private lateinit var restrooms: List<Restroom>
     private var mapReady = false
     private lateinit var progressBar: ProgressBar
+    private var subscribeUiFired = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = injectViewModel(viewModelFactory)
+        locationViewModel = injectViewModel(viewModelFactory)
+
+        //TODO: add lifecycle stuff
+        // val binding = DataBindingUtil.inflate<FragmentLegoSetBinding>(
+        //     inflater, R.layout.fragment_lego_set, container, false).apply {
+        //     lifecycleOwner = this@LegoSetFragment
+        //     fab.setOnClickListener { _ -> set.url?.let { intentOpenWebsite(activity!!,it) } }
+        // }
 
         val binding = FragmentRestroomMapBinding.inflate(inflater, container, false)
         context ?: return binding.root
@@ -69,9 +71,8 @@ class RestroomMapFragment : Fragment(), Injectable {
                     14F
                 )
             )
-            // subscribeUi(binding)
         }
-        subscribeUi()
+
         return binding.root
     }
 
@@ -81,12 +82,13 @@ class RestroomMapFragment : Fragment(), Injectable {
     }
 
     private fun subscribeUi() {
-        viewModel.restrooms.observe(viewLifecycleOwner, Observer { result ->
+        subscribeUiFired = true
+        locationViewModel.locationData.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
                     progressBar.hide()
-                    if (mapReady && viewModel.restrooms != null) {
-                        restrooms = viewModel.restrooms
+                    if (mapReady && locationViewModel.locationData != null) {
+                        // restrooms = viewModel.restrooms
                         // restrooms = result.data
                         result.data?.forEach { restroom ->
                             if (restroom.longitude.toString().isNotEmpty()
@@ -126,11 +128,12 @@ class RestroomMapFragment : Fragment(), Injectable {
     private fun startLocationUpdates() {
         locationViewModel = ViewModelProviders.of(this).get(LocationViewModel::class.java)
         locationViewModel.getLocationLiveData().observe(this, Observer {
-            it.latitude
-            it.longitude
-            // showMap(it.latitude, it.longitude)
-            // showMap()
-            // subscribeUi()
+
+            // Set the location data to pass to API
+            locationViewModel.locationDetails = it
+            if (locationViewModel.locationDetails != null && !subscribeUiFired) {
+                subscribeUi()
+            }
             val marker = LatLng(it.latitude, it.longitude)
             mMap.addMarker(
                 MarkerOptions()
@@ -144,46 +147,9 @@ class RestroomMapFragment : Fragment(), Injectable {
                     14F
                 )
             )
-            Log.d("RestroomMapFragment", "it.latitude: $it.latitude")
-            Log.d("RestroomMapFragment", "it.longitude: $it.longitude")
+            Log.d("RestroomMapFragment", "it.lat/lng: ${it}")
         })
     }
-
-    // private fun showMap(restroom: Restroom) {
-    // // private fun showMap(latitude: Double, longitude: Double) {
-    // //     Log.d("RestroomMapFragment","latitude: $latitude")
-    // //     Log.d("RestroomMapFragment","longitude: $longitude")
-    //     // val mapFragment =
-    //     //     childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
-    //     // mapFragment.getMapAsync { googleMap ->
-    //     //     mMap = googleMap
-    //     //     mapReady = true
-    //     //     // val orlando = LatLng(28.555680, -81.375171)
-    //     //     val orlando = LatLng(latitude, longitude)
-    //     //     mMap.moveCamera(
-    //     //         CameraUpdateFactory.newLatLngZoom(
-    //     //             orlando,
-    //     //             14F
-    //     //         )
-    //     //     )
-    //         //TODO: make this into it's own function
-    //         val marker = LatLng(latitude, longitude)
-    //         mMap.addMarker(MarkerOptions()
-    //             .position(marker)
-    //             .title("Your Location"))
-    //     }
-    // }
-
-    // private fun updateMap() {
-    //     if(restrooms!!.isNotEmpty()) {
-    //         restrooms?.forEach {
-    //             val marker = LatLng(it.latitude, it.longitude)
-    //             mMap.addMarker(MarkerOptions()
-    //                 .position(marker)
-    //                 .title(it.name))
-    //         }
-    //     }
-    // }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,

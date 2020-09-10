@@ -8,5 +8,5 @@ import javax.inject.Inject
  * The ViewModel for [MapsFragment].
  */
 class MapsViewModel @Inject constructor(repository: RestroomRepository) : ViewModel() {
-    val restrooms = repository.restrooms
+    // val restrooms = repository.restrooms
 }

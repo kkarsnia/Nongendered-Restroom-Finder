@@ -17,6 +17,8 @@ import javax.inject.Singleton
 @Module(includes = [ViewModelModule::class, CoreDataModule::class])
 class AppModule {
 
+    //TODO: clean all of this up, I don't think they are all used
+
     @Singleton
     @Provides
     fun provideRestroomService(

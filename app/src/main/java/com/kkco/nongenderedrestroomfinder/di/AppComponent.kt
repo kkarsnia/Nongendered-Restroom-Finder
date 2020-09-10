@@ -14,6 +14,7 @@ import javax.inject.Singleton
         AppModule::class,
         MainActivityModule::class]
 )
+//TODO: why isn't this being called?
 interface AppComponent {
     @Component.Builder
     interface Builder {

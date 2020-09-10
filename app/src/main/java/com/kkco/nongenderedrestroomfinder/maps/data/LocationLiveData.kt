@@ -2,6 +2,7 @@ package com.kkco.nongenderedrestroomfinder.maps.data
 
 import android.content.Context
 import android.location.Location
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -19,8 +20,10 @@ class LocationLiveData(context: Context) : LiveData<LocationDetails>() {
 
     override fun onActive() {
         super.onActive()
+        Log.d("LocationLiveData", "onActive FIRED")
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location ->
             location.also {
+                Log.d("LocationLiveData", "onActive FIRED location: ${it}")
                 setLocationData(it)
             }
         }
@@ -47,6 +50,7 @@ class LocationLiveData(context: Context) : LiveData<LocationDetails>() {
      * Called once location updates are received
      */
     private fun setLocationData(location: Location) {
+        Log.d("LocationLiveData", "setLocationData FIRED location: ${location}")
         value = LocationDetails(location.longitude, location.latitude)
     }
 
