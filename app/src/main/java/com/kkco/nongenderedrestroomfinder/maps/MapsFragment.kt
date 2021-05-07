@@ -1,18 +1,20 @@
-package com.kkco.nongenderedrestroomfinder
-
-import androidx.fragment.app.Fragment
+package com.kkco.nongenderedrestroomfinder.maps
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.collections.MarkerManager
+import com.google.maps.android.ktx.utils.collection.addMarker
+import com.kkco.nongenderedrestroomfinder.R
 
 class MapsFragment : Fragment() {
 
@@ -28,7 +30,15 @@ class MapsFragment : Fragment() {
          */
         val orlando = LatLng(28.555680, -81.375171)
         googleMap.addMarker(MarkerOptions().position(orlando).title("ORLANDO"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(orlando))
+        googleMap.moveCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                orlando,
+                12F
+            )
+        )
+
+        val markerManager = MarkerManager(googleMap)
+        addMarker(markerManager)
     }
 
     override fun onCreateView(
@@ -41,14 +51,32 @@ class MapsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
     }
-    
+
+    private fun addMarker(markerManager: MarkerManager) {
+        val markerCollection: MarkerManager.Collection = markerManager.newCollection()
+        markerCollection.addMarker {
+            position(LatLng(28.943598, -81.456740))
+            icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+            title("MORELANDO")
+        }
+        markerCollection.setOnMarkerClickListener { marker ->
+            Toast.makeText(
+                context,
+                "Marker clicked: " + marker.title,
+                Toast.LENGTH_SHORT
+            ).show()
+            false
+        }
+    }
+
     companion object {
         fun newInstance(): MapsFragment {
             val args = Bundle()
-            
+
             val fragment = MapsFragment()
             fragment.arguments = args
             return fragment
