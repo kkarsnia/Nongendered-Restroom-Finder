@@ -54,7 +54,7 @@ dependencies {
   implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentVersion"
   implementation "com.google.android.material:material:$rootProject.materialVersion"
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$rootProject.kotlinVersion"
-  implementation "androidx.paging:paging-runtime:$rootProject.pagingVersion"
+  implementation "androidx.paging:paging-runtime-ktx:$rootProject.pagingVersion"
   implementation "androidx.work:work-runtime-ktx:$rootProject.workVersion"
 
   // Coroutines

@@ -1,6 +1,10 @@
 package com.kkco.nongenderedrestroomfinder.api
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.kkco.nongenderedrestroomfinder.util.VALUE_OFFSET
+import com.kkco.nongenderedrestroomfinder.util.VALUE_PAGE
+import com.kkco.nongenderedrestroomfinder.util.VALUE_PER_PAGE
+import com.kkco.nongenderedrestroomfinder.util.VALUE_UNISEX
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -39,7 +43,14 @@ class RestroomServiceTest {
     fun requestRestrooms() {
         runBlocking {
             enqueueResponse("restrooms.json")
-            val resultResponse = service.getRestrooms().body()
+            // val resultResponse = service.getRestrooms().body()
+            val resultResponse = service.getRestroomsRemote(
+                VALUE_PAGE,
+                VALUE_PER_PAGE,
+                VALUE_OFFSET,
+                VALUE_UNISEX,
+                "28.555746",
+                "-81.375192").body()
 
             val request = mockWebServer.takeRequest()
             Assert.assertNotNull(resultResponse)
@@ -54,7 +65,10 @@ class RestroomServiceTest {
     fun getRestroomsResponse() {
         runBlocking {
             enqueueResponse("restrooms.json")
-            val resultResponse = service.getRestrooms().body()
+            // val resultResponse = service.getRestrooms().body()
+
+            val resultResponse = service
+
             val restrooms = resultResponse!!.results
 
             Assert.assertThat(resultResponse.count, CoreMatchers.`is`(9))

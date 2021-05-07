@@ -1,6 +1,7 @@
 package com.kkco.nongenderedrestroomfinder.maps.ui
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -16,9 +17,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.kkco.nongenderedrestroomfinder.R
 import com.kkco.nongenderedrestroomfinder.data.Result
@@ -28,9 +31,10 @@ import com.kkco.nongenderedrestroomfinder.di.injectViewModel
 import com.kkco.nongenderedrestroomfinder.ui.hide
 import com.kkco.nongenderedrestroomfinder.ui.show
 import com.kkco.nongenderedrestroomfinder.util.LOCATION_PERMISSION_REQUEST_CODE
+import timber.log.Timber
 import javax.inject.Inject
 
-class RestroomMapFragment : Fragment(), Injectable {
+class RestroomMapFragment : Fragment(), Injectable, OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -64,6 +68,7 @@ class RestroomMapFragment : Fragment(), Injectable {
         mapFragment.getMapAsync { googleMap ->
             mMap = googleMap
             mapReady = true
+            //TODO: fix this to use current coordinates or just remove - KK_09102020_1940
             val orlando = LatLng(28.555680, -81.375171)
             mMap.moveCamera(
                 CameraUpdateFactory.newLatLngZoom(
@@ -147,19 +152,21 @@ class RestroomMapFragment : Fragment(), Injectable {
                     14F
                 )
             )
-            Log.d("RestroomMapFragment", "it.lat/lng: ${it}")
+            Timber.tag("RestroomMapFragment").d("it.lat/lng: $it")
         })
     }
 
+    @SuppressLint("MissingPermission")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        Log.d("RestroomMapFragment", "onRequestPermissionsResult FIRED")
+        Timber.tag("RestroomMapFragment").d("onRequestPermissionsResult FIRED")
         when (requestCode) {
             LOCATION_PERMISSION_REQUEST_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mMap.isMyLocationEnabled = true
                     startLocationUpdates()
                 } else {
                     //TODO: use snackbar here
@@ -174,5 +181,27 @@ class RestroomMapFragment : Fragment(), Injectable {
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults)
             }
         }
+    }
+
+    override fun onMapReady(map: GoogleMap?) {
+
+        // Return if map not initialized properly
+        mMap = map ?: return
+
+        with(map.uiSettings) {
+            isZoomControlsEnabled = true
+            isCompassEnabled = true
+            isMyLocationButtonEnabled = true
+            isMapToolbarEnabled = true
+            isZoomGesturesEnabled = true
+            isScrollGesturesEnabled = true
+            isRotateGesturesEnabled = true
+        }
+
+        mMap.setOnInfoWindowClickListener(this)
+    }
+
+    override fun onInfoWindowClick(p0: Marker?) {
+        TODO("Not yet implemented")
     }
 }

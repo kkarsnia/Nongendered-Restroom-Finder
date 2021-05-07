@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     //     }
     // }
 
-    internal fun onOpenMap() {
+    private fun onOpenMap() {
         supportFragmentManager.beginTransaction()
             .replace(
                 R.id.container,
